@@ -1,0 +1,173 @@
+/*  "*"  means to remove all the styles of all the elements*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* for variables */
+:root {
+    /* For font size. calculate relation of viewWidth and viewHeight 
+    For responsiveness */
+    --index: calc(1vw + 1vh);
+    --text: #f3eacf;
+    --transition: transform 0.75s cubic-bezier(0.075, 0.5, 0, 1);
+}
+
+/* for fonts that exists inside our documents in folder 
+"_f" we write to import font not from the system, but from the custom folder */
+@font-face {
+    font-family: raleway_f;
+    src: url(../fonts/raleway-regular.woff2);
+}
+
+@font-face {
+    font-family: raleway_f;
+    src: url(../fonts/raleway-black.woff2);
+    font-weight: 900;
+}
+
+body {
+    background-color: #010101;
+    font-family: raleway_f, sans-serif;
+    line-height: 1.55;
+}
+
+.main-header {
+    position: relative;
+}
+
+.main-header::after {
+    /* always content:"", when working with pseudo elements */
+    content: "";
+    position: absolute;
+    z-index: 100;
+    width: 100%;
+    height: calc(var(--index) * 10);
+    background-image: url(../img/ground.png);
+    /* for plcing and no repeat */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    bottom: calc(var(--index) * -4.5);
+
+}
+
+.layers_all {
+    height: 100vh;
+    display: flex;
+    /* both align-items and justify-content are working together for placing element */
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    /* to make parallax and layer doesn't move */
+    overflow: hidden;
+    position: relative;
+}
+
+.layer {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    /* for covering all the screen in right size */
+    background-size: cover;
+    background-position: center;
+    /* The will-change CSS property hints to browsers how an element is expected to change.
+    More attention from browser*/
+    will-change: transform;
+    z-index: 2;
+    transition: var(--transition);
+}
+
+.layer_base {
+    /* For base layer
+    we placing picture usin 3d laying (x, y, z) 
+    this layer-base remains STATIC because it's position on Y AXIS == var(--scrollTop),
+    That is changable by js, that monitor scrolling
+    If we use calc(var(--scrollTop) / 2) The image will be moving 1.6 times slower that scrolling*/
+    transform: translate3d(0, calc(var(--scrollTop) / 1.6), 0);
+    z-index: 0;
+}
+
+.layer_middle {
+    /*  for middle layer (0, calc(var(--scrollTop) / 2.5) moving 2.5 times slower */
+    transform: translate3d(0, calc(var(--scrollTop) / 2.5), 0);
+}
+
+.layer_front {
+    /*  for front layer (0, calc(var(--scrollTop) / 5.7) moving 5.7 times slower*/
+    transform: translate3d(0, calc(var(--scrollTop) / 5.7), 0);
+}
+
+.layer_header {
+    z-index: 1;
+    transform: translate3d(0, calc(var(--scrollTop) / 2), 0);
+    text-transform: uppercase;
+    will-change: transform;
+    font-weight: 900;
+    color: var(--text);
+    /* x y blur color*/
+    text-shadow: 0 0 15px #f7edd0;
+    transition: var(--transition);
+}
+
+.layer_title {
+    font-size: calc(var(--index) * 2.5);
+    /* for spacing between letters + responsive design */
+    letter-spacing: calc(var(--index) / 2.25);
+}
+
+.layer_caption{
+    font-size: calc(var(--index) / 1.2);
+    /* for spacing between letters + responsive design */
+    letter-spacing: calc(var(--index) / 3.5);
+    /* margin + responsiveness */
+    margin-top: calc(var(--index) * -0.75);
+}
+
+.main-article {
+    --main-artuicle-transform: translate3d(0, calc(var(--scrollTop) / -7.5), 0);
+    /* for different sizes of the screen, we define minimal */
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* tp correctly position it */
+    position: relative;
+    text-align: center;
+}
+
+.main-article_header {
+    text-transform: uppercase;
+    font-size: calc(var(--index)* 1.8);
+    letter-spacing: calc(var(--index) / 7.5);
+    transform: var(--main-article-transform);
+    will-change: transform;
+    transition: var(--transition);
+}
+
+.main-article_paragraph {
+    max-width: calc(var(--index) * 30);
+    font-size: calc(var(--index) * 0.9);
+    margin-top: calc(var(--index) / 1.25);
+    transform: var(--main-article-transform);
+    will-change: transform;
+    transition: var(--transition);
+}
+
+.copy {
+    position: absolute;
+    bottom: calc(var(--index) * 2.5);
+    opacity: 0.45;
+    font-size: calc(var(--index) * 0.75);
+    letter-spacing: calc(var(--index) / 37.5);
+}
+
+.content {
+    /* browser should pay attention to this attribute so it will work better*/
+    will-change: transform;
+}
